@@ -1,4 +1,10 @@
 defmodule Scrooge.Accounts.Budget do
+  @moduledoc """
+  An `Ecto.Schema` for budgets. These are setup to
+  hold all transaction information, separate from individual
+  users for future extendability (shared budgets.)
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset

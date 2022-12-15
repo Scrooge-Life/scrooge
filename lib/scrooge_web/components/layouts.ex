@@ -1,4 +1,6 @@
 defmodule ScroogeWeb.Layouts do
+  @moduledoc false
+
   use ScroogeWeb, :html
 
   @dev_routes? Application.compile_env(:scrooge, :dev_routes)

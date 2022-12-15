@@ -71,8 +71,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache
@@ -105,8 +104,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache
@@ -139,8 +137,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache
@@ -172,8 +169,7 @@ jobs:
       - name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - name: Install (Mix)
         run: mix deps.get
@@ -239,8 +235,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache
@@ -304,8 +299,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache
@@ -352,8 +346,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache
@@ -389,8 +382,7 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - id: cache
         name: Cache

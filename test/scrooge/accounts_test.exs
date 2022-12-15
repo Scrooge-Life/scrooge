@@ -506,16 +506,16 @@ defmodule Scrooge.AccountsTest do
     end
   end
 
-  describe "accounts_budgets" do
+  describe "budgets" do
     alias Scrooge.Accounts.Budget
 
     import Scrooge.AccountsFixtures
 
     @invalid_attrs %{name: nil}
 
-    test "list_accounts_budgets/0 returns all accounts_budgets" do
+    test "list_budgets/0 returns all budgets" do
       budget = budget_fixture()
-      assert Accounts.list_accounts_budgets() == [budget]
+      assert Accounts.list_budgets() == [budget]
     end
 
     test "get_budget!/1 returns the budget with given id" do

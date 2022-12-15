@@ -1,4 +1,10 @@
 defmodule Scrooge.Accounts.UserToken do
+  @moduledoc """
+  An `Ecto.Schema` for user tokens. This can be tokens for multiple
+  different contexts like account confirmation, email checking,
+  password resetting, etc.
+  """
+
   use Ecto.Schema
 
   import Ecto.Query

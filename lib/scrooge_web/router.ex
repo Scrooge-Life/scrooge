@@ -53,7 +53,7 @@ defmodule ScroogeWeb.Router do
     live_session :budgets, on_mount: [{ScroogeWeb.UserAuth, :ensure_authenticated}] do
       live "/budgets", BudgetLive, :index
       live "/budgets/create", BudgetLive, :new
-      live "/budgets/:id", BudgetLive.Index, :edit
+      live "/budgets/:id", BudgetLive, :edit
     end
   end
 

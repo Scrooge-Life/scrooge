@@ -1,4 +1,8 @@
 defmodule Scrooge.Accounts.User do
+  @moduledoc """
+  An `Ecto.Schema` for all individual user records.
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset

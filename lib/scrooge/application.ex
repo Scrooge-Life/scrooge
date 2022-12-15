@@ -21,7 +21,7 @@ defmodule Scrooge.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Scrooge.PubSub},
       # Start the Endpoint (http/https)
-      ScroogeWeb.Endpoint,
+      ScroogeWeb.Endpoint
       # Start a worker by calling: Scrooge.Worker.start_link(arg)
       # {Scrooge.Worker, arg}
     ]

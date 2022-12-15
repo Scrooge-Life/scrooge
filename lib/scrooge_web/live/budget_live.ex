@@ -6,6 +6,7 @@ defmodule ScroogeWeb.BudgetLive do
 
   alias ScroogeWeb.BudgetComponents
 
+  @impl true
   def render(assigns) do
     ~H"""
     <main class="flex min-h-screen flex-col justify-center">
@@ -15,10 +16,13 @@ defmodule ScroogeWeb.BudgetLive do
           <:subtitle>This stores all of your transactions</:subtitle>
         </.header>
 
-        <ul role="list" class="mx-auto max-w-lg mt-6 divide-y divide-gray-200 border-t border-b border-gray-200">
+        <ul
+          role="list"
+          class="mx-auto max-w-lg mt-6 divide-y divide-gray-200 border-t border-b border-gray-200"
+        >
           <li :for={budget <- @budgets}>
             <.link
-              class={"flex items-center h-16 flex-shrink-0 px-4 border-b border-gray-200 text-neutral-900 gap-2 group"}
+              class="flex items-center h-16 flex-shrink-0 px-4 border-b border-gray-200 text-neutral-900 gap-2 group"
               href="#"
             >
               <div class={"h-8 w-8 rounded #{BudgetComponents.strong_bg_class(budget)} #{BudgetComponents.strong_text_class(budget)} grid justify-center items-center font-bold"}>
@@ -45,7 +49,11 @@ defmodule ScroogeWeb.BudgetLive do
           :let={f}
           id="budget_form"
           for={@changeset}
-          action={if @live_action == :new, do: ~p"/budgets/create?_action=save", else: ~p"/budgets/#{@changeset.data.id}?_action=save"}
+          action={
+            if @live_action == :new,
+              do: ~p"/budgets/create?_action=save",
+              else: ~p"/budgets/#{@changeset.data.id}?_action=save"
+          }
           method="post"
           phx-change="validate"
           phx-submit="save"
@@ -55,13 +63,7 @@ defmodule ScroogeWeb.BudgetLive do
             message="Oops, something went wrong! Please check the errors below."
           />
 
-          <.input
-            field={{f, :name}}
-            type="text"
-            label="Name"
-            value={input_value(f, :name)}
-            required
-          />
+          <.input field={{f, :name}} type="text" label="Name" value={input_value(f, :name)} required />
 
           <.input
             field={{f, :symbol}}
@@ -72,10 +74,15 @@ defmodule ScroogeWeb.BudgetLive do
           />
 
           <fieldset>
-            <legend class="block text-sm font-semibold leading-6 text-zinc-800">Choose a label color</legend>
+            <legend class="block text-sm font-semibold leading-6 text-zinc-800">
+              Choose a label color
+            </legend>
             <div class="mt-4 flex flex-wrap items-center gap-3">
               <%= for color <- Budget.colors() do %>
-                <label phx-feedback-for={Phoenix.HTML.Form.input_name(f, :color)} class="flex items-center gap-2 text-sm leading-6 text-zinc-800">
+                <label
+                  phx-feedback-for={Phoenix.HTML.Form.input_name(f, :color)}
+                  class="flex items-center gap-2 text-sm leading-6 text-zinc-800"
+                >
                   <input
                     type="radio"
                     id={Phoenix.HTML.Form.input_id(f, :color)}
@@ -136,7 +143,7 @@ defmodule ScroogeWeb.BudgetLive do
   end
 
   defp apply_action(socket, :index, _params) do
-    if length(socket.assigns.budgets) == 0 do
+    if Enum.empty?(socket.assigns.budgets) do
       redirect(socket, to: ~p"/budgets/create")
     else
       socket

@@ -107,10 +107,11 @@ jobs:
   Docs:
     environment:
       name: Docs
-      url: https://code-docs.scrooge.life
+      url: https://docs.scrooge.life
 
     permissions:
-      contents: write
+      pages: write
+      id-token: write
 
     runs-on: ubuntu-latest
 
@@ -122,20 +123,21 @@ jobs:
         name: Install (Elixir)
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          version-file: .tool-versions
 
       - name: Install (Mix)
         run: mix deps.get
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
       - name: Build
         run: mix docs
 
-      - name: Publish
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload pages
+        uses: actions/upload-pages-artifact@v1
         with:
-          cname: code-docs.scrooge.life
-          force_orphan: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: docs
-          publish_dir: ./doc
+          path: ./doc
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1

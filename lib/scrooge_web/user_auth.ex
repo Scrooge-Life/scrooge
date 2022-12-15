@@ -1,4 +1,8 @@
 defmodule ScroogeWeb.UserAuth do
+  @moduledoc """
+  Helpers for user authentication.
+  """
+
   use ScroogeWeb, :verified_routes
 
   import Plug.Conn

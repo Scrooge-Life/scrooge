@@ -1,4 +1,8 @@
 defmodule ScroogeWeb.ErrorJSON do
+  @moduledoc """
+  Controller for handling and returning errors with JSON.
+  """
+
   # If you want to customize a particular status code,
   # you may add your own clauses, such as:
   #

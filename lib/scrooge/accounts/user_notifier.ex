@@ -1,4 +1,8 @@
 defmodule Scrooge.Accounts.UserNotifier do
+  @moduledoc """
+  Helper functions for emailing information to users.
+  """
+
   import Swoosh.Email
 
   alias Scrooge.Mailer

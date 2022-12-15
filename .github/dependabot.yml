@@ -8,15 +8,24 @@ updates:
     schedule:
       day: friday
       interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       day: friday
       interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope
 
   - package-ecosystem: mix
     directory: /
     schedule:
        day: friday
        interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope

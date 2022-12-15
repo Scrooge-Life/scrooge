@@ -19,3 +19,4 @@ jobs:
           package-name: scrooge
           release-type: elixir
           skip-labeling: true
+          TOKEN: ${{ secrets.RELEASE_TOKEN }}

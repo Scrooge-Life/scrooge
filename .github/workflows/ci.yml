@@ -72,6 +72,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache
@@ -105,6 +106,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache
@@ -138,6 +140,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache
@@ -170,6 +173,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - name: Install (Mix)
         run: mix deps.get
@@ -236,6 +240,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache
@@ -300,6 +305,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache
@@ -347,6 +353,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache
@@ -383,6 +390,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - id: cache
         name: Cache

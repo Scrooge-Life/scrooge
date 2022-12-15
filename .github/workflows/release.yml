@@ -17,6 +17,7 @@ jobs:
         with:
           extra-files: README.md
           package-name: scrooge
+          pull-request-title-pattern: "chore: release ${version}"
           release-type: elixir
           skip-labeling: true
           TOKEN: ${{ secrets.RELEASE_TOKEN }}

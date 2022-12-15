@@ -1,0 +1,4 @@
+Contact: mailto:admin@scrooge.life
+Expires: 2023-01-01T07:00:00.000Z
+Preferred-Languages: en
+Canonical: https://scrooge.life/.well-known/security.txt

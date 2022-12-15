@@ -1,0 +1,50 @@
+---
+
+version: "3"
+
+services:
+  database:
+    image: ghcr.io/scrooge-life/cockroach:latest
+    ports:
+      - 26257:26257
+      - 8080:8080
+
+  chrome:
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    image: selenium/node-chrome:4.1.2-20220131
+    shm_size: 2gb
+    ports:
+      - 5900:5900
+
+  edge:
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    image: selenium/node-edge:4.1.2-20220131
+    shm_size: 2gb
+
+  firefox:
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    image: selenium/node-firefox:4.1.2-20220131
+    shm_size: 2gb
+
+  selenium-hub:
+    container_name: selenium-hub
+    image: selenium/hub:4.1.2-20220131
+    ports:
+      - 4442:4442
+      - 4443:4443
+      - 4444:4444

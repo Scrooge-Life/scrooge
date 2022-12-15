@@ -1,0 +1,33 @@
+---
+name: Maintenance
+
+on:
+  schedule:
+    - cron: '43 5 * * *'
+
+jobs:
+  Stale:
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Mark Stale
+        uses: actions/stale@v6
+        with:
+          exempt-issue-labels: bug,enhancement,help wanted,upstream
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: |
+            Thank you for taking the time to report this issue. Due to no
+            activity and this issue not being triaged, we are going to
+            close it. If you think this is an error, please open the issue
+            again and take one of the maintainers to triage it.
+          stale-pr-message: |
+            Thank you for the PR! Due to no activity for 60 days, we are going
+            to close this PR to keep things moving. If you think this is an
+            error, please open the PR again, ensure it is up to date with
+            `main`, and tag one of the maintainers to take a look.
+          stale-issue-label: 'no-issue-activity'
+          stale-pr-label: 'no-pr-activity'

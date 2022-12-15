@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html class="min-h-full" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Scrooge Life"><%= assigns[:page_title] || "Scrooge" %></.live_title>
+
+    <link rel="manifest" href={~p"/manifest.json"} />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="ATcms" />
+    <meta name="apple-mobile-web-app-title" content="ATcms" />
+    <meta name="msapplication-starturl" content="/" />
+
+    <link rel="icon" type="image/svg+xml" href={~p"/favicon.svg"} />
+    <link
+      rel="alternate icon"
+      type="image/png"
+      sizes="64x64"
+      href={~p"/icons/foreground/icon-64-1.png"}
+    />
+    <link rel="mask-icon" href={~p"/favicon.svg"} color="#cc4a14" />
+
+    <link rel="apple-touch-icon" href={~p"/icons/background/icon-512-1.png"} />
+    <link rel="apple-touch-icon" sizes="180x180" href={~p"/icons/background/icon-180-1.png"} />
+    <link rel="apple-touch-icon" sizes="167x167" href={~p"/icons/background/icon-167-1.png"} />
+    <link rel="apple-touch-icon" sizes="152x152" href={~p"/icons/background/icon-152-1.png"} />
+
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
+
+  <body class="h-full overflow-hidden bg-gray-100">
+    <%= @inner_content %>
+  </body>
+</html>

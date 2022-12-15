@@ -1,0 +1,106 @@
+<.link
+  class="flex items-center h-16 flex-shrink-0 px-4 bg-sky-50 border-r border-b border-gray-200 text-sky-900 gap-2 group"
+  href={~p"/budgets"}
+>
+  <div class="h-8 w-8 rounded bg-sky-400 text-zinc-900 grid justify-center items-center">
+    <span>MB</span>
+  </div>
+  <span class="font-semibold flex-grow">
+    My Budget
+  </span>
+  <div class="flex-shrink-0 self-center">
+    <Heroicons.chevron_right class="h-4 w-4 text-gray-400 group-hover:text-gray-500" />
+  </div>
+</.link>
+
+<div class="flex-1 flex flex-col overflow-y-auto bg-gray-50 border-r border-gray-200">
+  <nav class="flex-1 px-2 py-4">
+    <div class="space-y-1">
+      <.link class="group rounded-md py-2 px-2 flex items-center text-sm font-medium" href={~p"/"}>
+        <Heroicons.home class="ml-1 text-gray-500 flex-shrink-0 h-6 w-6" />
+        <span class="ml-2">Transactions</span>
+      </.link>
+    </div>
+
+    <div :if={dev_routes?()} class="mt-10">
+      <p class="px-3 text-xs font-semibold text-gray-800 uppercase tracking-wider">
+        Developer Routes
+      </p>
+
+      <div class="mt-2 space-y-1">
+        <.link
+          class="group rounded-md py-2 px-2 flex items-center text-sm font-medium"
+          href={~p"/dev/dashboard"}
+        >
+          <span class="ml-1">Phoenix Dashboard</span>
+        </.link>
+
+        <.link
+          class="group rounded-md py-2 px-2 flex items-center text-sm font-medium"
+          href={~p"/dev/mailbox"}
+        >
+          <span class="ml-1">Mailbox</span>
+        </.link>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="flex-shrink-0 flex bg-gray-50 p-4 border-t border-r border-gray-200 relative">
+  <.focus_wrap
+    id={"#{@area}-user-navigation"}
+    class="absolute origin-bottom-right -top-full left-4 right-4 z-10 rounded-md border border-gray-200 shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby={"#{@area}-user-navigation-button"}
+    phx-window-keydown={hide_dropdown(%JS{}, "##{@area}-user-navigation")}
+    phx-key="escape"
+    phx-click-away={hide_dropdown(%JS{}, "##{@area}-user-navigation")}
+  >
+    <div class="py-1" role="none">
+      <.link
+        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-sky-500 hover:text-white"
+        role="menuitem"
+        href={~p"/settings"}
+      >
+        Account Settings
+      </.link>
+
+      <.link
+        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-sky-500 hover:text-white"
+        role="menuitem"
+        method="delete"
+        href={~p"/sign-out"}
+      >
+        Sign Out
+      </.link>
+    </div>
+  </.focus_wrap>
+
+  <button
+    id={"#{@area}-user-navigation-button"}
+    class="flex-shrink-0 w-full group block text-left focus:outline-none"
+    phx-click={show_dropdown(%JS{}, "##{@area}-user-navigation")}
+  >
+    <div class="flex items-center">
+      <div class="mx-1 relative">
+        <img
+          class="inline-block h-10 w-10 rounded-md"
+          src={gravatar(@current_user, size: 48)}
+          alt={@current_user.email}
+        />
+      </div>
+
+      <div class="ml-3 flex-1">
+        <p class="text-sm font-medium text-gray-800">
+          <%= friendly_name(@current_user) %>
+        </p>
+        <.link href="#" class="text-xs text-gray-600 group-hover:underline group-focus:underline">
+          Settings
+        </.link>
+      </div>
+
+      <Heroicons.chevron_up_down class="block flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-600 group-focus:text-gray-600" />
+    </div>
+  </button>
+</div>

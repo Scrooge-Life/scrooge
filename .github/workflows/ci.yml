@@ -1,0 +1,413 @@
+---
+name: CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  CACHE_VERSION: v1
+
+jobs:
+  Build:
+    permissions:
+      contents: read
+      packages: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install (Buildx)
+        uses: docker/setup-buildx-action@v2
+
+      - name: Tag
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+
+      - name: Login (GHCR)
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+          labels: ${{ steps.meta.outputs.labels }}
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+
+  Credo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Credo
+        run: mix credo
+
+  Dialyzer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Dialyzer
+        run: mix dialyzer --format github
+
+  Doctor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Doctor
+        run: mix doctor
+
+  Format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - name: Install (Mix)
+        run: mix deps.get
+
+      - name: Format
+        run: mix format --check-formatted
+
+  Lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Lint
+        uses: github/super-linter/slim@v4
+        env:
+          DEFAULT_BRANCH: main
+
+  Test_Browser:
+    name: Test (${{ matrix.combos.image }} @ ${{ matrix.combos.resolution }})
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: test
+      WALLABY_BROWSER: ${{ matrix.combos.browser }}
+      WALLABY_SCREEN: ${{ matrix.combos.resolution }}
+      WALLABY_SELENIUM_URL: http://localhost:4444/wd/hub/
+
+    services:
+      browser:
+        image: selenium/standalone-${{ matrix.combos.image }}:4.1.2-20220131
+        options: --shm-size="2g"
+        ports:
+          - 4444:4444
+
+      database:
+        image: ghcr.io/scrooge-life/cockroach:latest
+        ports:
+          - 26257:26257
+          - 8080:8080
+
+    strategy:
+      matrix:
+        combos:
+          - browser: chrome
+            image: chrome
+            resolution: 1920x1080
+          - browser: firefox
+            image: firefox
+            resolution: 1366x768
+          - browser: MicrosoftEdge
+            image: edge
+            resolution: 360x640
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Build
+        run: mix assets.deploy
+
+      - id: ip
+        name: Set IP
+        run: echo "##[set-output name=ip;]$(ifconfig eth0 | grep 'inet [0-9\.]* ' -o | sed 's/[^0-9\.]//g')"
+
+      - id: test
+        name: Test
+        run: mix test test/scrooge_browser
+        env:
+          WALLABY_URL: http://${{ steps.ip.outputs.ip }}:4002
+
+      - if: ${{ failure() }}
+        name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.combos.image }} ${{ matrix.combos.resolution }} Screenshots
+          path: test/screenshots/
+
+  Test_Core:
+    name: Test (Core)
+    env:
+      MIX_ENV: test
+
+    runs-on: ubuntu-latest
+
+    services:
+      database:
+        image: ghcr.io/scrooge-life/cockroach:latest
+        ports:
+          - 26257:26257
+          - 8080:8080
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Test
+        run: mix test test/scrooge
+
+  Test_Web:
+    name: Test (Web)
+    env:
+      MIX_ENV: test
+
+    runs-on: ubuntu-latest
+
+    services:
+      database:
+        image: ghcr.io/scrooge-life/cockroach:latest
+        ports:
+          - 26257:26257
+          - 8080:8080
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Test
+        run: mix test test/scrooge
+
+  Sobelow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: beam
+        name: Install (Elixir)
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0
+          elixir-version: 1.14
+
+      - id: cache
+        name: Cache
+        uses: actions/cache@v3
+        with:
+          key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+          path: |
+            _build
+            deps
+          restore-keys: |
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-
+            elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-
+
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: Install (Mix)
+        run: mix deps.get
+
+      - name: Sobelow
+        run: mix sobelow --config

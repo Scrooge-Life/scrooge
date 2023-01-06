@@ -56,7 +56,7 @@ defmodule Scrooge.MixProject do
       {:sobelow, "~> 0.8", only: :dev},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
-      {:telemetry, "~> 1.1.0", override: true},
+      {:telemetry, "~> 1.2.0", override: true},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:wallaby, "~> 0.30.1", runtime: false, only: :test}

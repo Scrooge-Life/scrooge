@@ -49,7 +49,7 @@ defmodule Scrooge.MixProject do
       {:phoenix_live_dashboard, "~> 0.7"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.18"},
-      {:phoenix, "1.7.0-rc.0", override: true},
+      {:phoenix, "1.7.0-rc.3", override: true},
       {:plug_cowboy, "~> 2.6", override: true},
       {:postgrex, ">= 0.0.0"},
       {:prom_ex, "~> 1.7.1"},

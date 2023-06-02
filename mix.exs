@@ -52,7 +52,7 @@ defmodule Scrooge.MixProject do
       {:phoenix, "1.7.0-rc.0", override: true},
       {:plug_cowboy, "~> 2.6", override: true},
       {:postgrex, ">= 0.0.0"},
-      {:prom_ex, "~> 1.7.1"},
+      {:prom_ex, "~> 1.8.0"},
       {:sobelow, "~> 0.8", only: :dev},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},

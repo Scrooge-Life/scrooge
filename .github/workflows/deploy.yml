@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install (Buildx)
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Install (Flyctl)
         uses: superfly/flyctl-actions/setup-flyctl@master

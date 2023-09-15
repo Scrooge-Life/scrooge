@@ -49,7 +49,7 @@ jobs:
           flyctl auth docker -t ${{ secrets.FLY_API_TOKEN }}
 
       - name: Login (GHCR)
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

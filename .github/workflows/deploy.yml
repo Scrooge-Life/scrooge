@@ -67,7 +67,7 @@ jobs:
 
       - id: export
         name: Export
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const metadata = JSON.parse(`${{ steps.meta.outputs.json }}`)

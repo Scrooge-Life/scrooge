@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Mark Stale
-        uses: actions/stale@v6
+        uses: actions/stale@v9
         with:
           exempt-issue-labels: bug,enhancement,help wanted,upstream
           repo-token: ${{ secrets.GITHUB_TOKEN }}

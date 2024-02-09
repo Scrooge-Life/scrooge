@@ -76,7 +76,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |
@@ -110,7 +110,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |
@@ -144,7 +144,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |
@@ -244,7 +244,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |
@@ -309,7 +309,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |
@@ -357,7 +357,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |
@@ -394,7 +394,7 @@ jobs:
 
       - id: cache
         name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: elixir-setup-${{ env.CACHE_VERSION }}-elixir-${{ steps.beam.outputs.elixir-version }}-otp-${{ steps.beam.outputs.otp-version }}-${{ github.job }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
           path: |

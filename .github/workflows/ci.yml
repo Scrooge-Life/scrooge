@@ -277,7 +277,7 @@ jobs:
 
       - if: ${{ failure() }}
         name: Upload Screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.combos.image }} ${{ matrix.combos.resolution }} Screenshots
           path: test/screenshots/

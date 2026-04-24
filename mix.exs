@@ -33,7 +33,7 @@ defmodule Scrooge.MixProject do
   defp deps do
     [
       {:argon2_elixir, "~> 3.0"},
-      {:corsica, "~> 1.0"},
+      {:corsica, "~> 2.1"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.21.0", only: [:dev, :test]},

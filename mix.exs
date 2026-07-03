@@ -59,7 +59,7 @@ defmodule Scrooge.MixProject do
       {:telemetry, "~> 1.1.0", override: true},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:wallaby, "~> 0.30.1", runtime: false, only: :test}
+      {:wallaby, "~> 0.31.0", runtime: false, only: :test}
     ]
   end
 
